@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="catalog">
+			<group id="available" translate="label" type="text" sortOrder="991" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Hide Price</label>
+                <field id="hide_add_to_cart" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Hide Add To Cart</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                      
+				</field>
+                <field id="hide_add_to_cart_groups" translate="label" type="multiselect" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Hide from Groups</label>
+                    <source_model>TemplateProvider\Hideprice\Model\Config\Source\Customer\Group</source_model>
+					<depends>
+						<field id="hide_add_to_cart">1</field>
+					</depends> 					
+				</field>				
+                <field id="hide_price" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Hide price</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>                      
+				</field>
+                <field id="hide_price_groups" translate="label" type="multiselect" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Hide from Groups</label>
+                    <source_model>TemplateProvider\Hideprice\Model\Config\Source\Customer\Group</source_model>
+					<depends>
+						<field id="hide_price">1</field>
+					</depends> 					
+				</field>
+                <field id="hide_price_text" translate="label comment" sortOrder="5" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hide Price Text</label>
+                    <depends>
+                        <field id="hide_price">1</field>
+                    </depends>
+                    <comment>Text instead of the price, if price is hidden</comment>
+                </field>
+            </group>
+        </section>		
+    </system>
+</config>
