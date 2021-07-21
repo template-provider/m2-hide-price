@@ -11,8 +11,8 @@ class ProductObserver implements ObserverInterface
     /**
      * @var \TemplateProvider\Hideprice\Helper\Data
      */
-    protected $_helper; 
-	
+    protected $_helper;
+
     /**
      * @param ProductAvailableHelper $helper
      */
@@ -21,16 +21,16 @@ class ProductObserver implements ObserverInterface
     ) {
 		$this->_helper = $helper;
     }
-	
+
     /**
      * @param Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
     {
-		if (!$this->_helper->isAvailablePrice()) {
+		if ($this->_helper->hidePrice()) {
 			$product = $observer->getEvent()->getProduct();
 			$product->setCanShowPrice(false);
 		}
     }
-} 
+}

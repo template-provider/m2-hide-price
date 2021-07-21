@@ -12,8 +12,8 @@ class QuoteObserver implements ObserverInterface
     /**
      * @var \TemplateProvider\Hideprice\Helper\Data
      */
-    protected $_helper; 
-	
+    protected $_helper;
+
     /**
      * @param ProductAvailableHelper $helper
      */
@@ -22,17 +22,17 @@ class QuoteObserver implements ObserverInterface
     ) {
 		$this->_helper = $helper;
     }
-	
+
     /**
      * @param Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
     {
-		if (!$this->_helper->isAvailableAddToCart()) {
+		if ($this->_helper->hideAddToCart()) {
 			throw new LocalizedException(
 				__('You can not add products to cart.')
-			);		
+			);
 		}
     }
-} 
+}

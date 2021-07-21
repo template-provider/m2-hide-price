@@ -9,11 +9,14 @@ use Magento\Framework\Pricing\SaleableInterface;
 use Magento\Framework\Pricing\Price\PriceInterface;
 use Magento\Framework\Pricing\Render\RendererPool;
 use Magento\Catalog\Pricing\Price\MinimalPriceCalculatorInterface;
+use TemplateProvider\Hideprice\Helper\Data as ProductAvailableHelper;
 
 class FinalPriceBox extends \Magento\Catalog\Pricing\Render\FinalPriceBox
 {
     /** @var \Magento\Framework\App\Http\Context */
     protected $httpContext;
+    
+    private ProductAvailableHelper $helper;
 
     /**
      * @param Context $context
@@ -27,6 +30,7 @@ class FinalPriceBox extends \Magento\Catalog\Pricing\Render\FinalPriceBox
      */
     public function __construct(
         Context $context,
+        ProductAvailableHelper $helper,
         SaleableInterface $saleableItem,
         PriceInterface $price,
         RendererPool $rendererPool,
@@ -36,15 +40,18 @@ class FinalPriceBox extends \Magento\Catalog\Pricing\Render\FinalPriceBox
         MinimalPriceCalculatorInterface $minimalPriceCalculator = null
     ) {
         $this->httpContext = $httpContext;
+        $this->helper = $helper;
         parent::__construct($context, $saleableItem, $price, $rendererPool, $data, $salableResolver, $minimalPriceCalculator);
     }
 
     protected function _toHtml()
     {
-        $isLoggedIn = $this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
-        $value = $this->_scopeConfig->getValue('catalog/available/hide_price_text', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
-        if (!empty($value) && !$isLoggedIn) {
-            return $value;
+        if ($this->helper->hidePrice()) {
+            $isLoggedIn = $this->httpContext->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
+            $value = $this->_scopeConfig->getValue('catalog/available/hide_price_text', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            if (!empty($value) && !$isLoggedIn) {
+                return $value;
+            }
         }
         return parent::_toHtml();
     }

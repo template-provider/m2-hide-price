@@ -11,28 +11,28 @@ class CollectionObserver implements ObserverInterface
     /**
      * @var \TemplateProvider\Hideprice\Helper\Data
      */
-    protected $_helper; 
-	
+    protected $helper;
+
     /**
      * @param ProductAvailableHelper $helper
      */
     public function __construct(
 		ProductAvailableHelper $helper
     ) {
-		$this->_helper = $helper;
+		$this->helper = $helper;
     }
-	
+
     /**
      * @param Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
     {
-		if (!$this->_helper->isAvailablePrice()) {
+		if ($this->helper->hidePrice()) {
 			$collection = $observer->getEvent()->getCollection();
 			foreach ($collection as $product) {
 				$product->setCanShowPrice(false);
-			}	
+			}
 		}
     }
-} 
+}

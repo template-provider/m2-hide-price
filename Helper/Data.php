@@ -10,17 +10,17 @@ use Magento\Customer\Model\Session;
 class Data extends AbstractHelper
 {
     const XML_CONFIG_HIDE_ADD_TO_CART = 'catalog/available/hide_add_to_cart';
-	
+
     const XML_CONFIG_HIDE_ADD_TO_CART_GROUPS = 'catalog/available/hide_add_to_cart_groups';
-	
+
     const XML_CONFIG_HIDE_PRICE = 'catalog/available/hide_price';
-	
+
     const XML_CONFIG_HIDE_PRICE_GROUPS = 'catalog/available/hide_price_groups';
-	
+
     /**
      * @var \Magento\Customer\Model\Session
      */
-    protected $_session;
+    protected $session;
 
     /**
      * @param Context $context
@@ -30,8 +30,8 @@ class Data extends AbstractHelper
         Context $context,
         Session $session
     ) {
-        $this->_session = $session;
-		
+        $this->session = $session;
+
         parent::__construct(
 			$context
 		);
@@ -40,37 +40,28 @@ class Data extends AbstractHelper
     /**
      * @return bool
      */
-    public function isAvailableAddToCart()
+    public function hideAddToCart()
     {
-		if ($this->_getConfig(self::XML_CONFIG_HIDE_ADD_TO_CART)) {
-			return !in_array(
-				$this->_session->getCustomerGroupId(), 
-				explode(',', $this->_getConfig(self::XML_CONFIG_HIDE_ADD_TO_CART_GROUPS))
-			);			
+        if ($this->scopeConfig->isSetFlag(self::XML_CONFIG_HIDE_ADD_TO_CART, ScopeInterface::SCOPE_STORE)) {
+			return in_array(
+				$this->session->getCustomerGroupId(),
+				explode(',', $this->scopeConfig->getValue(self::XML_CONFIG_HIDE_ADD_TO_CART_GROUPS, ScopeInterface::SCOPE_STORE))
+			);
 		}
-		return true;
-    }	
+		return false;
+    }
 
     /**
      * @return bool
      */
-    public function isAvailablePrice()
+    public function hidePrice()
     {
-		if ($this->_getConfig(self::XML_CONFIG_HIDE_PRICE)) {
-			return !in_array(
-				$this->_session->getCustomerGroupId(), 
-				explode(',', $this->_getConfig(self::XML_CONFIG_HIDE_PRICE_GROUPS))
-			);			
+		if ($this->scopeConfig->isSetFlag(self::XML_CONFIG_HIDE_PRICE, ScopeInterface::SCOPE_STORE)) {
+			return in_array(
+				$this->session->getCustomerGroupId(),
+				explode(',', $this->scopeConfig->getValue(self::XML_CONFIG_HIDE_PRICE_GROUPS, ScopeInterface::SCOPE_STORE))
+			);
 		}
-		return true;
-    }	 
-	
-    /**
-     * @param   string $path
-     * @return  string|null
-     */
-    protected function _getConfig($path)
-    {
-        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
-    }      
+		return false;
+    }
 }

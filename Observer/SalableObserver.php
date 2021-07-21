@@ -11,8 +11,8 @@ class SalableObserver implements ObserverInterface
     /**
      * @var \TemplateProvider\Hideprice\Helper\Data
      */
-    protected $_helper; 
-	
+    protected $_helper;
+
     /**
      * @param ProductAvailableHelper $helper
      */
@@ -21,16 +21,16 @@ class SalableObserver implements ObserverInterface
     ) {
 		$this->_helper = $helper;
     }
-	
+
     /**
      * @param Observer $observer
      * @return void
      */
     public function execute(Observer $observer)
     {
-		if (!$this->_helper->isAvailableAddToCart()) {
+		if ($this->_helper->hideAddToCart()) {
 			$salable = $observer->getEvent()->getSalable();
-			$salable->setIsSalable(false);			
+			$salable->setIsSalable(false);
 		}
     }
-} 
+}
