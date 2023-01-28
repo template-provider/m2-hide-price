@@ -30,14 +30,14 @@ class FinalPriceBox extends \Magento\Catalog\Pricing\Render\FinalPriceBox
      */
     public function __construct(
         Context $context,
-        ProductAvailableHelper $helper,
         SaleableInterface $saleableItem,
         PriceInterface $price,
         RendererPool $rendererPool,
-        array $data = [],
+        ProductAvailableHelper $helper,
         \Magento\Framework\App\Http\Context $httpContext,
+        array $data = [],
         SalableResolverInterface $salableResolver = null,
-        MinimalPriceCalculatorInterface $minimalPriceCalculator = null
+        MinimalPriceCalculatorInterface $minimalPriceCalculator = null,
     ) {
         $this->httpContext = $httpContext;
         $this->helper = $helper;
